@@ -1,5 +1,5 @@
 import streamlit as st
-st.tile("My Digital Profile")
+st.title("My Digital Profile")
 
 st.header("แนะนำตัว")
 st.write("นายพีระวัฒน์ ไชยวงค์")
