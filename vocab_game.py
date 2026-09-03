@@ -97,11 +97,11 @@ ans2 = st.text_input(
     value=st.session_state.ans2_val,
 )
 ans3 = st.text_input(
-    "ข้อ 3: แตงโมในภาษาอังกฤษ `Wa_ _ _ _ _ l o n`. 🍉",
+    "ข้อ 3: แตงโมในภาษาอังกฤษ `wa_ _ _ _ _ l o n`. 🍉",
     value=st.session_state.ans3_val,
 )
 ans4 = st.text_input(
-    "ข้อ 4: Drive a `C _ _`. 🚗",
+    "ข้อ 4: Drive a `w _ _`. 🚗",
     value=st.session_state.ans4_val,
 )
 # อัปเดตค่าล่าสุดเข้าตัวแปร
