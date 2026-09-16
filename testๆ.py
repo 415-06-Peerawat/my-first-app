@@ -33,7 +33,7 @@ def show_receipt_dialog(total, discount, net, received):
         st.success(f"**💸 เงินทอน:** {change:,.2f} บาท")
         st.balloons()
     else:
-        st.error(f"❌ ยอดเงินไม่พอ! ขาดอีก {net - received:,.2f} บาท")
+        st.error(f"❌ แล้วเองจะสั่งเยอะทำพระแสงไรฟระ {net - received:,.2f} บาท")
 
 # ----------------------------------------------------
 # 📌 3. ส่วนรับข้อมูลจากผู้ใช้ (UI)
