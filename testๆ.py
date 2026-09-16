@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("☕ Koffeeba Cafe - Smart Shop & Discount")
+st.title("☕ Koffeeba Cafe")
 st.write("แอปพลิเคชันคิดเงินและคำนวณส่วนลดประจำร้าน")
 
 # ----------------------------------------------------
