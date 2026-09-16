@@ -22,7 +22,7 @@ prices = {
 def show_receipt_dialog(total, discount, net, received):
     st.write(f"**💰 ยอดรวมสินค้าทั้งหมด:** {total:,.2f} บาท")
     st.write(f"**🏷️ ส่วนลดที่ได้รับ:** {discount:,.2f} บาท")
-    st.write(f"**💵 ยอดที่ต้องชำระสุทธิ:** {net:,.2f} บาท")
+    st.write(f"**💵 ยอดที่ต้องชำระ:** {net:,.2f} บาท")
     
     st.divider()
     
@@ -92,7 +92,7 @@ st.subheader("🛒 สรุปยอดเงินคงเหลือชำ�
 m_col1, m_col2, m_col3 = st.columns(3)
 m_col1.metric("ยอดรวมสินค้า", f"{total_price:,.2f} ฿")
 m_col2.metric("ส่วนลดที่ได้รับ", f"{discount:,.2f} ฿")
-m_col3.metric("ยอดรวมที่ต้องจ่ายสุทธิ", f"{net_price:,.2f} ฿")
+m_col3.metric("ยอดรวมที่ต้องจ่าย", f"{net_price:,.2f} ฿")
 
 # ----------------------------------------------------
 # 📌 6. ชำระเงินและรับเงินทอน
