@@ -1,94 +1,87 @@
-import streamlit as st
-
-st.title("☕ Koffeeba Cafe - Smart Shop & Discount")
-st.write("แอปพลิเคชันคิดเงินและคำนวณส่วนลดประจำร้าน")
-
 # ----------------------------------------------------
-# 📌 1. กำหนดราคาสินค้าตามเมนู
+# 📌 1. กำหนดข้อมูลเมนูและราคา
 # ----------------------------------------------------
-prices = {
+menu = {
     "Americano": 75,
     "Cappuccino": 80,
     "Flat White": 85,
     "Cream Brulee": 213,
     "Croissant": 130,
-    "Honey Lemon Cold Brew": 170
+    "Honey Lemon Cold Brew": 170,
 }
 
-# ----------------------------------------------------
-# 📌 2. ฟังก์ชัน MessageBox (Dialog) สำหรับแสดงใบเสร็จ
-# ----------------------------------------------------
-@st.dialog("🧾 สรุปใบเสร็จรับเงิน")
-def show_receipt_dialog(total, discount, net, received):
-    st.write(f"**💰 ยอดรวมสินค้าทั้งหมด:** {total:,.2f} บาท")
-    st.write(f"**🏷️ ส่วนลดที่ได้รับ:** {discount:,.2f} บาท")
-    st.write(f"**💵 ยอดที่ต้องชำระสุทธิ:** {net:,.2f} บาท")
-    
-    st.divider()
-    
-    st.write(f"**📥 รับเงินจากลูกค้า:** {received:,.2f} บาท")
-    
-    if received >= net:
-        change = received - net
-        st.success(f"**💸 เงินทอน:** {change:,.2f} บาท")
-        st.balloons()
-    else:
-        st.error(f"❌ ยอดเงินไม่พอ! ขาดอีก {net - received:,.2f} บาท")
+print("===================================")
+print(" ☕ Koffeeba Cafe - Smart Shop")
+print("===================================")
+print("--- รายการเมนู ---")
+for item, price in menu.items():
+    print(f"- {item}: {price} บาท")
+print("-----------------------------------\n")
 
 # ----------------------------------------------------
-# 📌 3. ส่วนรับข้อมูลจากผู้ใช้ (UI)
+# 📌 2. รับข้อมูลจำนวนสินค้าจากผู้ใช้
 # ----------------------------------------------------
-st.header("📝 เลือกรายการสินค้า (ระบุจำนวน)")
-col1, col2 = st.columns(2)
-
-with col1:
-    qty_americano = st.number_input(f"Americano ({prices['Americano']} ฿)", min_value=0, step=1)
-    qty_cappuccino = st.number_input(f"Cappuccino ({prices['Cappuccino']} ฿)", min_value=0, step=1)
-    qty_flat_white = st.number_input(f"Flat White ({prices['Flat White']} ฿)", min_value=0, step=1)
-
-with col2:
-    qty_cream_brulee = st.number_input(f"Cream Brulee ({prices['Cream Brulee']} ฿)", min_value=0, step=1)
-    qty_croissant = st.number_input(f"Croissant ({prices['Croissant']} ฿)", min_value=0, step=1)
-    qty_honey_lemon = st.number_input(f"Honey Lemon Cold Brew ({prices['Honey Lemon Cold Brew']} ฿)", min_value=0, step=1)
-
-st.divider()
-
-st.header("💳 การชำระเงิน")
-received_money = st.number_input("ใส่จำนวนเงินที่รับจากลูกค้า (บาท)", min_value=0.0, step=10.0)
+qty_americano = int(input("รับ Americano (75 ฿) กี่แก้ว: ") or 0)
+qty_cappuccino = int(input("รับ Cappuccino (80 ฿) กี่แก้ว: ") or 0)
+qty_flat_white = int(input("รับ Flat White (85 ฿) กี่แก้ว: ") or 0)
+qty_cream_brulee = int(input("รับ Cream Brulee (213 ฿) กี่ชิ้น: ") or 0)
+qty_croissant = int(input("รับ Croissant (130 ฿) กี่ชิ้น: ") or 0)
+qty_honey_lemon = int(input("รับ Honey Lemon Cold Brew (170 ฿) กี่แก้ว: ") or 0)
 
 # ----------------------------------------------------
-# 📌 4. คำนวณและแสดงผล
+# 📌 3. คำนวณราคารวม
 # ----------------------------------------------------
-if st.button("🖩 คำนวณเงินและออกใบเสร็จ"):
-    # คำนวณยอดรวม และยอดรวมเฉพาะสินค้าที่ราคาไม่เกิน 200
-    total_price = 0
-    eligible_for_15_discount = 0
-    
-    items_ordered = [
-        (qty_americano, prices["Americano"]),
-        (qty_cappuccino, prices["Cappuccino"]),
-        (qty_flat_white, prices["Flat White"]),
-        (qty_cream_brulee, prices["Cream Brulee"]),
-        (qty_croissant, prices["Croissant"]),
-        (qty_honey_lemon, prices["Honey Lemon Cold Brew"])
-    ]
-    
-    for qty, price in items_ordered:
-        item_total = qty * price
-        total_price += item_total
-        
-        # เงื่อนไข: สินค้าต้องราคาไม่เกิน 200 ถึงจะเข้าร่วมส่วนลด 15%
-        if price <= 200:
-            eligible_for_15_discount += item_total
-            
-    # คำนวณเงื่อนไขส่วนลด (If-Else)
-    discount = 0
-    if total_price >= 300:
-        discount = total_price * 0.30  # ซื้อครบ 300 บาทลด 30%
-    elif total_price >= 200:
-        discount = eligible_for_15_discount * 0.15  # ซื้อครบ 200 บาทลด 15% (ไม่นับของที่ราคาเกิน 200)
-        
-    net_price = total_price - discount
-    
-    # เรียกใช้ Dialog เพื่อแสดงผล
-    show_receipt_dialog(total_price, discount, net_price, received_money)
+orders = [
+    (qty_americano, menu["Americano"]),
+    (qty_cappuccino, menu["Cappuccino"]),
+    (qty_flat_white, menu["Flat White"]),
+    (qty_cream_brulee, menu["Cream Brulee"]),
+    (qty_croissant, menu["Croissant"]),
+    (qty_honey_lemon, menu["Honey Lemon Cold Brew"]),
+]
+
+total_price = 0
+eligible_for_15 = 0  # ยอดรวมสินค้าที่ราคาไม่เกิน 200 บาท
+
+for qty, price in orders:
+    subtotal = qty * price
+    total_price += subtotal
+    # เช็กเงื่อนไข: สินค้าที่ราคา <= 200 บาท เท่านั้นที่จะนำไปคิดส่วนลด 15%
+    if price <= 200:
+        eligible_for_15 += subtotal
+
+# ----------------------------------------------------
+# 📌 4. เช็กเงื่อนไขส่วนลด (If-Else)
+# ----------------------------------------------------
+discount = 0.0
+
+if total_price >= 300:
+    discount = total_price * 0.30  # ซื้อครบ 300 บาท ลด 30%
+elif total_price >= 200:
+    discount = (
+        eligible_for_15 * 0.15
+    )  # ซื้อครบ 200 บาท ลด 15% (ไม่นับชิ้นเกิน 200)
+
+net_price = total_price - discount
+
+# ----------------------------------------------------
+# 📌 5. แสดงผลสรุปยอดเงิน รับเงิน และคำนวณเงินทอน
+# ----------------------------------------------------
+print("\n===================================")
+print("🧾 สรุปยอดชำระเงิน")
+print("===================================")
+print(f"ราคารวมทั้งหมด    : {total_price:,.2f} บาท")
+print(f"ส่วนลดที่ได้รับ      : {discount:,.2f} บาท")
+print(f"ยอดรวมสุทธิ       : {net_price:,.2f} บาท")
+print("-----------------------------------")
+
+received_money = float(input("รับเงินจากลูกค้า (บาท): ") or 0)
+
+if received_money >= net_price:
+    change = received_money - net_price
+    print(f"เงินทอน           : {change:,.2f} บาท")
+    print("===================================")
+    print("🎉 ขอบคุณที่ใช้บริการ Koffeeba Cafe!")
+else:
+    missing = net_price - received_money
+    print(f"❌ เงินไม่พอ! ยังขาดอีก {missing:,.2f} บาท")
