@@ -15,7 +15,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("☕ Koffeeba Cafe - แอปพลิเคชันคำนวณราคาสินค้าและส่วนลด")
+st.title("☕ Koffeeba Cafe")
 
 # 1. กรอกจำนวนสินค้าแต่ละรายการ
 st.subheader("🛒 เลือกจำนวนสินค้า")
